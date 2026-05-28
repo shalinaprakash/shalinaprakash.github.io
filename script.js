@@ -3,12 +3,14 @@ const API = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent
 
 async function loadArticles() {
   const list = document.getElementById("articles");
+  const anchor = document.getElementById("substack-anchor");
   try {
     const res = await fetch(API);
     if (!res.ok) throw new Error("Feed " + res.status);
     const data = await res.json();
     if (data.status !== "ok" || !Array.isArray(data.items)) throw new Error("Bad feed");
-    for (const item of data.items) {
+    const sorted = data.items.slice().sort((a, b) => new Date(a.pubDate) - new Date(b.pubDate));
+    for (const item of sorted) {
       const li = document.createElement("li");
       const a = document.createElement("a");
       a.href = item.link;
@@ -16,7 +18,7 @@ async function loadArticles() {
       a.rel = "noopener";
       a.textContent = item.title;
       li.appendChild(a);
-      list.appendChild(li);
+      list.insertBefore(li, anchor);
     }
   } catch (e) {
     console.error(e);
