@@ -8,11 +8,6 @@ async function loadArticles() {
     if (!res.ok) throw new Error("Feed " + res.status);
     const data = await res.json();
     if (data.status !== "ok" || !Array.isArray(data.items)) throw new Error("Bad feed");
-    if (!data.items.length) {
-      list.innerHTML = "<li>No articles yet.</li>";
-      return;
-    }
-    list.innerHTML = "";
     for (const item of data.items) {
       const li = document.createElement("li");
       const a = document.createElement("a");
@@ -25,8 +20,6 @@ async function loadArticles() {
     }
   } catch (e) {
     console.error(e);
-    list.innerHTML =
-      '<li><a href="https://shalina25.substack.com" target="_blank" rel="noopener">Read on Substack →</a></li>';
   }
 }
 
