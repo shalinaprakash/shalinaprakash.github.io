@@ -9,7 +9,7 @@ async function loadArticles() {
     if (!res.ok) throw new Error("Feed " + res.status);
     const data = await res.json();
     if (data.status !== "ok" || !Array.isArray(data.items)) throw new Error("Bad feed");
-    const sorted = data.items.slice().sort((a, b) => new Date(a.pubDate) - new Date(b.pubDate));
+    const sorted = data.items.slice().sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
     for (const item of sorted) {
       const li = document.createElement("li");
       const a = document.createElement("a");
